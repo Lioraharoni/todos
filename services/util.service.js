@@ -61,7 +61,6 @@ function animateCSS(el, animation='bounce') {
 }
 
 function convertDateToTxt(date){
-    // debugger
     const dateNow = Date.now()
     const dateTimestamp = new Date(date).getTime()
     console.log(dateTimestamp);
@@ -72,29 +71,23 @@ function convertDateToTxt(date){
     const YEAR = 365 * DAY
 
     const diff = dateNow - dateTimestamp
-    // const dateDiff = new Date(diff)
-    // const anHourAgo = dateNow - HOUR;
-    // const aDayAgo = dateNow - HOUR * 24;
+
     if (diff < MINUTE)
     {
         const diffInSeconds = Math.floor(diff / 1000);  // Convert to seconds
         return diffInSeconds + " seconds ago";
-        // let diffInMinutes = (dateNow - date) / 60000
-        // return dateDiff.getMinutes() + " minutes ago"
     }
+
     if (diff < HOUR)
     {
         const diffInMinutes = Math.floor(diff / MINUTE);  // Convert to minutes
         return diffInMinutes + " minutes ago";
-        // let diffInMinutes = (dateNow - date) / 60000
-        // return dateDiff.getMinutes() + " minutes ago"
     }
+
     if(diff < DAY)
     {
         const diffInHours = Math.floor(diff / HOUR);  // Convert to hours
         return diffInHours + " hours ago";
-        // let diffInHours = (dateNow - date) / (60000 * 24)
-        // return dateDiff.getHours() + " hours ago"
     }
 
     if(diff < YEAR)

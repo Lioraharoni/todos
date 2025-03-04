@@ -1,7 +1,7 @@
 import { todoService } from "../../services/todo.service.js";
-import { REMOVE_TODO, SET_IS_LOADING, SET_TODOS, UPDATE_TODO } from "../reducers/todo.reducer.js";
+import { ADD_TODO, REMOVE_TODO, SET_IS_LOADING, SET_TODOS, UPDATE_TODO } from "../reducers/todo.reducer.js";
 import { store } from "../store.js";
-import { addUserActivity } from "./user.actions.js";
+import { addUserActivity, updateUserBalance } from "./user.actions.js";
 
 
 export const ACTIVITY_UPDATE_TODO='Updated the todo'
@@ -37,14 +37,21 @@ export function removeTodo(todoId)
         })
 }
 
-export function updateTodo(todo)
+export function updateTodo(todoToUpdate)
 {
-    // debugger
-    return todoService.save(todo)
+    const todoBeforeUpdate = store.getState().todoModule.todos.find(todo => todo._id === todoToUpdate._id) 
+    const prevIsDone = todoBeforeUpdate ? todoBeforeUpdate.isDone : true
+
+    return todoService.save(todoToUpdate)
     .then((savedTodo) => {
         store.dispatch({type: UPDATE_TODO, todo: savedTodo})
         console.log('todo action -> todo updated')
         addUserActivity({at: new Date(), txt: ACTIVITY_UPDATE_TODO, name: savedTodo.txt})
+        
+        if(!prevIsDone && savedTodo.isDone)
+        {
+            updateUserBalance(10)
+        }
         return savedTodo
     })
     .catch(err => {
@@ -55,12 +62,16 @@ export function updateTodo(todo)
 
 export function addTodo(todo)
 {
-    // debugger
     return todoService.save(todo)
     .then((savedTodo) => {
-        store.dispatch({type: UPDATE_TODO, todo: savedTodo})
-        console.log('todo action -> todo updated')
-        addUserActivity({at: new Date(), txt: ACTIVITY_UPDATE_TODO, name: savedTodo.txt})
+        
+        store.dispatch({type: ADD_TODO, todo: savedTodo})
+        console.log('todo action -> todo added')
+        addUserActivity({at: new Date(), txt: ACTIVITY_ADD_TODO, name: savedTodo.txt})
+        if(savedTodo.isDone)
+        {
+            updateUserBalance(10)
+        }
         return savedTodo
     })
     .catch(err => {
@@ -73,10 +84,10 @@ export function saveTodo(todo)
 {
     if(todo._id)
     {
-        updateTodo(todo)
+        return updateTodo(todo)
     }
     else
     {
-        addTodo(todo)
+        return addTodo(todo)
     }
 }

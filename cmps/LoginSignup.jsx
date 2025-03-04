@@ -5,10 +5,9 @@ import { login, signUp } from '../store/actions/user.actions.js'
 const { useState } = React
 // const { use}
 
-export function LoginSignup({ onSetUser }) {
+export function LoginSignup() {
 
     const [isSignup, setIsSignUp] = useState(false)
-
     const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
 
     function handleChange({ target }) {
@@ -77,7 +76,7 @@ export function LoginSignup({ onSetUser }) {
                 <button>{isSignup ? 'Signup' : 'Login'}</button>
                 
             </form>
-            {/* <UserDetails/> */}
+
             <div className="btns">
                 <a href="#" onClick={() => setIsSignUp(!isSignup)}>
                     {isSignup ?

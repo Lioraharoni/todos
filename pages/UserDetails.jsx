@@ -6,37 +6,23 @@ import { updateUserPrefs } from "../store/actions/user.actions.js";
 const {useSelector} = ReactRedux
 const { useState, useEffect} = React
 export function UserDetails(){
-
-
     //change to loggedInUser
     const loggedInUser = useSelector(storeState => storeState.userModule.loggedInUser)
-    const userActivities = useSelector(storeState => storeState.userModule.activities)
-    // let userActivities = []
-    // if (loggedInUser)
-    // {
-    //     userActivities = useSelector(storeState => storeState.userModule.loggedInUser.activities)
-    // }
-    // const userPrefs = useSelector(storeState => storeState.userModule.loggedInUser.prefs)
-    console.log("UserDetails user=", loggedInUser);
-    
-    // const [color, setColor] = useState(getUserPrefs().color)
-    // const [bgColor, setBgColor] = useState(getUserPrefs().bgColor)
+    const userActivities = loggedInUser ? loggedInUser.activities : []
     const [details, setDetails] = useState({color: 'white', bgColor:'black', fullname:''})
-    // const [color, setColor] = useState('white')
-    // const [bgColor, setBgColor] = useState('black')
+
+    console.log("UserDetails user=", loggedInUser, "userActivities=", userActivities);
+
 
     useEffect(() =>{
         console.log("Finished Loading");
         if(loggedInUser)
         {
-            // userActivities = useSelector(storeState => storeState.userModule.loggedInUser.activities)
             setDetails({color: loggedInUser.prefs.color, bgColor: loggedInUser.prefs.bgColor, fullname:loggedInUser.fullname})
-            // setColor(user.prefs.color)
-            // setBgColor(user.prefs.bgColor)
         }
     }, [loggedInUser])
-    // const Color = ''
-    // const bgColor = ''
+
+
     function handleChange({ target }) {
         console.log("handleChange prevIsDone=", target);
         
@@ -57,21 +43,10 @@ export function UserDetails(){
                 break
         }
 
-        // if(field === 'color'){
-        //     // setColor(value)
-        //     setPrefs(prevPrefs => ({...prevPrefs, color: value}))
-        // }
-        // else if(field === 'bgColor'){
-        //     // setBgColor(value)
-        //     setPrefs(prevPrefs => ({...prevPrefs, bgColor: value}))
-        // }
         setDetails(prevDetails => ({...prevDetails, [field]: value}))
         console.log(field, value);
-        // userPrefs = {...userPrefs, [field]:value}
-        // user = {...user, [field]:value}
-        // setTodoToEdit(prevTodoToEdit => ({ ...prevTodoToEdit, [field]: value }))
-    }
 
+    }
 
     function onSubmit(ev){
         ev.preventDefault()
@@ -81,7 +56,6 @@ export function UserDetails(){
     }
 
     if(!loggedInUser) return <div>Loading user...</div>
-
 
     
     return (
@@ -99,7 +73,6 @@ export function UserDetails(){
 
                 <button>Update Profile</button>
             </form>
-
 
             {userActivities && <ActivityList userActivities={userActivities}/>}
 

@@ -4,11 +4,6 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({...filterBy})
 
-    // useEffect(() => {
-    //     // Notify parent
-    //     onSetFilterBy(filterByToEdit)
-    // }, [filterByToEdit])
-
     function handleChange({ target }) {
         const field = target.name
         let value = target.value
@@ -35,14 +30,7 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
         ev.preventDefault()
         onSetFilterBy(filterByToEdit)
     }
-    function onDisplayChange(selected)
-    {
-        setFilterByToEdit(prevFilter => ({ ...prevFilter, displayAll: selected }))
-        // const newFilterBy = {...filterByToEdit, displayAll : selected}
-        console.log(filterByToEdit)
-        // store.dispatch({type: SET_FILTER_BY, filterBy : newFilterBy})
-        // onSetFilterBy(filterByToEdit)
-    }
+
     const { txt, importance } = filterByToEdit
     return (
         <section className="todo-filter">
@@ -56,7 +44,6 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
                     type="number" placeholder="By Importance" id="importance" name="importance"
                 />
                 <select name="displayAll" id="displayAll" onChange={handleChange} value={filterByToEdit.displayAll}>
-                {/* <select name="displayAll" id="displayAll" onChange={(ev) => onDisplayChange(ev.target.value)} value={filterByToEdit.displayAll}> */}
                     <option value="all">All</option>
                     <option value="active">Active</option>
                     <option value="done">Done</option>

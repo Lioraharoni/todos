@@ -1,6 +1,7 @@
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { updateUserBalance } from "../store/actions/user.actions.js"
+import { saveTodo } from "../store/actions/todo.actions.js"
 
 const { useState, useEffect, useRef } = React
 const { useNavigate, useParams } = ReactRouterDOM
@@ -10,31 +11,24 @@ export function TodoEdit() {
     const [todoToEdit, setTodoToEdit] = useState(todoService.getEmptyTodo())
     const navigate = useNavigate()
     const params = useParams()
-    const prevIsDoneRef = useRef()
-
 
     useEffect(() => {
         if (params.todoId) loadTodo()
-        // prevIsDone = todoToEdit.isDone
-        // console.log("useEffect prevIsDone=", prevIsDone);
     }, [])
 
-    // useEffect(() => {
-    //     prevIsDone
-    // }, [todoToEdit])
 
     function loadTodo() {
         todoService.get(params.todoId)
             .then(data => {
                 setTodoToEdit(data)
-                prevIsDoneRef.current = data.isDone
+                // prevIsDoneRef.current = data.isDone
                 console.log("loadTodo prevIsDone=", data.isDone);
             })
             .catch(err => console.log('err:', err))
     }
 
     function handleChange({ target }) {
-        console.log("handleChange prevIsDone=", prevIsDoneRef);
+        // console.log("handleChange prevIsDone=", prevIsDoneRef);
         
         const field = target.name
         let value = target.value
@@ -59,14 +53,9 @@ export function TodoEdit() {
     }
 
     function onSaveTodo(ev) {
-        console.log("onSaveTodo prevIsDone=", prevIsDoneRef.current);
         ev.preventDefault()
-        todoService.save(todoToEdit)
-            .then((savedTodo) => {
-                if(prevIsDoneRef.current === false && savedTodo.isDone)
-                {
-                    updateUserBalance(10)
-                }
+        saveTodo(todoToEdit)
+            .then(savedTodo => {
                 navigate('/todo')
                 showSuccessMsg(`Todo Saved (id: ${savedTodo._id})`)
             })
@@ -74,6 +63,7 @@ export function TodoEdit() {
                 showErrorMsg('Cannot save todo')
                 console.log('err:', err)
             })
+
     }
 
     const { txt, importance, isDone, color } = todoToEdit

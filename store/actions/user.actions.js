@@ -43,6 +43,10 @@ export function logout(){
 
 export function updateUserBalance(diff)
 {
+    // debugger
+    if(!store.getState().userModule.loggedInUser)
+        return
+    
     console.log('user actions -> Starting update user balance');
     
     return userService.updateBalance(diff)
@@ -58,6 +62,9 @@ export function updateUserBalance(diff)
 
 export function updateUserPrefs(prefs)
 {
+    if(!store.getState().userModule.loggedInUser)
+        return
+
     console.log('user actions -> Starting update user prefs', prefs);
     
     return userService.updatePrefs(prefs)
@@ -74,6 +81,9 @@ export function updateUserPrefs(prefs)
 
 export function addUserActivity(userActivity)
 {
+    if(!store.getState().userModule.loggedInUser)
+        return
+
     // debugger
     console.log('user actions -> Starting adding user activity', userActivity);
     return userService.addActivity(userActivity)

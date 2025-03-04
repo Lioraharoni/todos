@@ -66,7 +66,7 @@ function _setLoggedinUser(user) {
     const userToSave = { _id: user._id, fullname: user.fullname, prefs: user.prefs,  balance:user.balance
         ,activities: user.activities
     }
-    // const userToSave = { ...user}
+
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     console.log("user to save=", userToSave);
     
@@ -88,14 +88,14 @@ function updateBalance(diff) {
     return getById(loggedInUserId)
         .then(user => {
             user.balance += diff
-            //_setLoggedinUser
+
             return storageService.put(STORAGE_KEY, user)
             .then(_setLoggedinUser)
         })
 }
 
 function updatePrefs(prefs){
-    debugger
+    
     const loggedInUserId = getLoggedinUser()._id
     console.log("updatePrefs loggedInUserId", loggedInUserId);
     
@@ -103,7 +103,7 @@ function updatePrefs(prefs){
         .then(user => {
             user.prefs = {color:prefs.color, bgColor:prefs.bgColor}
             user.fullname = prefs.fullname
-            //_setLoggedinUser
+
             return storageService.put(STORAGE_KEY, user)
             .then(_setLoggedinUser)
         })
@@ -111,15 +111,13 @@ function updatePrefs(prefs){
 
 function addActivity(activity)
 {    
-    // debugger
     const loggedInUserId = getLoggedinUser()._id
     console.log("addActivity loggedInUserId", loggedInUserId);
     
     return getById(loggedInUserId)
         .then(user => {
-            debugger
             user.activities = [activity, ...user.activities]
-            //_setLoggedinUser
+
             return storageService.put(STORAGE_KEY, user)
             .then(_setLoggedinUser)
         })

@@ -7,11 +7,9 @@ export const ADD_USER_ACTIVITY = 'ADD_USER_ACTIVITY'
 
 
 const initialState = {
-    // loggedInUser: userService.getLoggedinUser(),
     loggedInUser: userService.getLoggedinUser(),
-    balance: 10000,
-    activities: []
-    // activities: [{txt: 'Added a Todo', at: 1523873242735}]
+    // balance: 10000,
+    // activities: []
 }
 
 export function userReducer(state = initialState, cmd= {}){
@@ -21,15 +19,11 @@ export function userReducer(state = initialState, cmd= {}){
     switch(cmd.type){
         case SET_USER:
             console.log("userReducer cmd.type=", cmd.type, "user=", cmd.user);
-            const newActivities = cmd.user? cmd.user.activities : state.activities
-            // if(cmd.user)
-            // {
-            //     newActivities = cmd.user.activities
-            // }
+            // const newActivities = cmd.user? cmd.user.activities : state.activities
             return {
                 ...state,
                 loggedInUser: cmd.user,
-                activities: newActivities
+                // activities: newActivities
             }
         case UPDATE_USER_BALANCE:
             console.log("userReducer cmd.type=", cmd.type, "balance=", cmd.balance);
@@ -46,14 +40,12 @@ export function userReducer(state = initialState, cmd= {}){
             }
 
          case ADD_USER_ACTIVITY:
-            debugger
             const activities = cmd.activities ? cmd.activities : []
             console.log("userReducer cmd.type=", cmd.type, "activities=", cmd.activities);
-            // let userActivities = state.loggedInUser.
             return {
                 ...state,
-                loggedInUser : {...state.loggedInUser, activities: activities},
-                activities
+                loggedInUser : {...state.loggedInUser, activities :activities},
+                // activities
             }
         default:
             return state

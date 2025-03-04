@@ -1,13 +1,12 @@
 import { TodoFilter } from "../cmps/TodoFilter.jsx"
 import { TodoList } from "../cmps/TodoList.jsx"
 import { DataTable } from "../cmps/data-table/DataTable.jsx"
-import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { store } from "../store/store.js"
 import { loadTodos, removeTodo, updateTodo } from "../store/actions/todo.actions.js"
 
 import { SET_FILTER_BY } from "../store/reducers/todo.reducer.js"
-import { updateUser, updateUserBalance } from "../store/actions/user.actions.js"
+
 const { useSelector, useDispatch } = ReactRedux
 
 const { useState, useEffect } = React
@@ -15,15 +14,9 @@ const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
 
-    // const [todos, setTodos] = useState(null)
-
-    // Special hook for accessing search-params:
+   // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()
     const todos = useSelector(storeState => storeState.todoModule.todos)
-
-    // const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
-
-    // const [filterBy, setFilterBy] = useState(defaultFilter)
     const filterBy = useSelector(storeState => storeState.todoModule.filterBy)
 
     useEffect(() => {
@@ -31,6 +24,7 @@ export function TodoIndex() {
         loadTodos()
             .catch(showErrorMsg('Cannot load todos'))
     }, [filterBy])
+
 
     function onRemoveTodo(todoId) {
         var isSure = confirm("Are you sure want to delete?");
@@ -43,21 +37,17 @@ export function TodoIndex() {
     }
 
     function onToggleTodo(todo) {
-        debugger
+        
         console.log("onToggleTodo todo", todo);
         const todoToSave = { ...todo, isDone: !todo.isDone }
 
+
         updateTodo(todoToSave)
             .then(savedTodo => 
-                {
-                    console.log("onToggleTodo savedTodo", savedTodo);
-                    
-                    if(savedTodo.isDone)
-                    {
-                        updateUserBalance(10)
-                    }
-                    showSuccessMsg(`Todo is ${(savedTodo.isDone)? 'done' : 'back on your list'}`)
-                })
+            {
+                console.log("onToggleTodo savedTodo", savedTodo);
+                showSuccessMsg(`Todo is ${(savedTodo.isDone)? 'done' : 'back on your list'}`)
+            })
             .catch(err => showErrorMsg('Cannot toggle todo ' + todo.id))
     }
 
@@ -65,7 +55,6 @@ export function TodoIndex() {
         store.dispatch({type: SET_FILTER_BY, filterBy : newFilterBy})
         
     }
-
 
 
     if (!todos) return <div>Loading...</div>

@@ -11,13 +11,10 @@ const { useSelector, useDispatch } = ReactRedux
 
 export function AppHeader() {
     const navigate = useNavigate()
-    // const [user, setUser] = useState(userService.getLoggedinUser())
     const user = useSelector(storeState => storeState.userModule.loggedInUser)
-    // const userBalance = useSelector(storeState => storeState.userModule.loggedInUser.balance)
-    const todosCount = useSelector(storeState => storeState.todoModule.todos.length)
     const totalTodosCount = useSelector(storeState => storeState.todoModule.totalTodosCount)
     const doneTodosCount = useSelector(storeState => storeState.todoModule.doneTodosCount)
-    // const doneTodosCount = useSelector(storeState => storeState.todoModule.todos.length)
+
 
     function onLogout() {
         logout()
@@ -26,10 +23,7 @@ export function AppHeader() {
             })
     }
 
-    // function onSetUser(user) {
-    //     setUser(user)
-    //     navigate('/')
-    // }
+
     console.log("AppHeader user=", user);
 
     const color = user && user.prefs ? user.prefs.color : 'white'
@@ -41,15 +35,11 @@ export function AppHeader() {
                 <h1>React Todo App</h1>
                 {user ? (
                     < section >
-                        {/* < section style= {{backgroundColor: user.prefs.bgColor}}> */}
-
                         <Link to={`/user/${user._id}`}>Hello {user.fullname} ${user.balance}</Link>
-                        {/* <button onClick={onL}>My Profile</button> */}
                         <button onClick={onLogout}>Logout</button>
                     </ section >
                 ) : (
                     <section>
-                        {/* <LoginSignup onSetUser={onSetUser} /> */}
                         <LoginSignup />
                     </section>
                 )}

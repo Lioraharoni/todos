@@ -13,8 +13,6 @@ const initialState = {
     todos: [],
     totalTodosCount: 0,
     doneTodosCount: 0,
-    // totalTodos: [],
-    // doneTodos: [],
     isLoading: false,
     filterBy: todoService.getDefaultFilter()
 }
@@ -28,8 +26,6 @@ export function todoReducer(state = initialState, cmd={}){
                 todos: cmd.todos,
                 totalTodosCount: cmd.totalTodosCount,
                 doneTodosCount: cmd.doneTodosCount
-                // totalTodos: cmd.totalTodos,
-                // doneTodos: cmd.totalTodos.filter(todo => todo.isDone)
             }
 
         case REMOVE_TODO:
@@ -43,8 +39,6 @@ export function todoReducer(state = initialState, cmd={}){
                 todos: state.todos.filter(todo => todo._id !== cmd.todoId),
                 totalTodosCount: state.totalTodosCount - 1,
                 doneTodosCount: newDoneTodosCount
-                // totalTodos: state.totalTodos.filter(todo => todo._id !== cmd.todoId),
-                // doneTodos: state.doneTodos.filter(todo => todo._id !== cmd.todoId)
             }
 
         case ADD_TODO:
@@ -54,30 +48,25 @@ export function todoReducer(state = initialState, cmd={}){
             }
 
         case UPDATE_TODO:
-            // debugger
             console.log("UPDATE_TODO todos=", state.todos, cmd, state);
             let prevIsDone = state.todos.find(todo => todo._id === cmd.todo._id).isDone
-            // let newDoneTodos = state.doneTodos
             newDoneTodosCount = state.doneTodosCount
             console.log("UPDATE_TODO prevIsDone=", prevIsDone);
+
             if(prevIsDone && !cmd.todo.isDone)
             {
                 newDoneTodosCount--
-                // newDoneTodos = state.doneTodos.filter(todo => todo._id !== cmd.todo)
             }
             else if(!prevIsDone && cmd.todo.isDone)
             {
                 newDoneTodosCount++
-                // newDoneTodos = [state.doneTodos, cmd.todo]
             }
             
             console.log("UPDATE_TODO newDoneTodosCount=", newDoneTodosCount);
             return {
                 ...state,
                 todos: state.todos.map(todo => todo._id === cmd.todo._id ? cmd.todo : todo),
-                // doneTodos: newDoneTodos
                 doneTodosCount: newDoneTodosCount
-
             }
 
         case SET_IS_LOADING:

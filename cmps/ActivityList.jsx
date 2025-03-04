@@ -6,7 +6,6 @@ const {useState, useEffect} = React
 
 export function ActivityList({ userActivities }) {
 
-
     const [activities, setActivities] = useState(userActivities);
 
     useEffect(()=>{
@@ -24,8 +23,6 @@ export function ActivityList({ userActivities }) {
       }
 
     return (
-
-
         <ul className="activities-list"  >
         { activities && activities.length > 0 ? 
         (activities.map(activity =>
